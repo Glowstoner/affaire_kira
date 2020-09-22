@@ -80,22 +80,21 @@ def get_email(account, proxy):
         elif "\"spam\": true" in r.text:
             global proxies
             proxies.remove(proxy)
+            print("-> proxy spam: true, suppression.")
     
         infos = re.findall(regex,r.text)[0]
         return infos
     except Exception as e:
         return None
 
-def get_relations_mail(account):
+def get_relations_mail(rel, output):
     files = {}
-    rel = relations(account)
-
     iden = 0
 
     print("-> {} relation(s)".format(len(rel)))
 
-    if os.path.isfile("./{}_results.csv".format(account)):
-        f = open(account+"_results.csv", 'r')
+    if os.path.isfile("./{}_results.csv".format(output)):
+        f = open(output+"_results.csv", 'r')
         lines = f.readlines()
         if len(lines) != 0:
             iden = int(lines[len(lines) - 1].split(";")[0]) + 1
@@ -105,7 +104,7 @@ def get_relations_mail(account):
     proxies = import_proxies()
     api = 0
 
-    f = open(account+"_results.csv", 'a')
+    f = open(output+"_results.csv", 'a')
 
     for i in range(iden, len(rel)):
         print("-> récupération {}/{} ~ {}%".format(i, len(rel), round(100*i/len(rel), 3)))
@@ -128,13 +127,24 @@ def get_relations_mail(account):
     print("-> Términé (100%)")
 
 def main():
-    if len(sys.argv) == 2:
+    if len(sys.argv) == 3:
         if sys.argv[1] == "search":
             account = sys.argv[2]
-            get_relations_mail(account)
-        else:
-            print("-> usage: ./antikira search <compte>")
-    else:
-        print("-> usage: ./antikira search <compte>")
+            rel = relations(account)
+            get_relations_mail(rel, account)
+        elif sys.argv[1] == "research":
+            filename = sys.argv[2]
+            if not os.path.isfile("./{}".format(filename)):
+                print("-> fichier inexistant")
+                sys.exit(1)
 
-def __init__(): main()
+            with open(filename, 'r') as f:
+                lines = f.readlines()
+                rel = [l.split(';')[1] for l in lines]
+                get_relations_mail(rel, filename+"-research")
+        else:
+            print("-> usage: ./antikira search/research <compte/fichier>")
+    else:
+        print("-> usage: ./antikira search/research <compte/fichier>")
+
+if __name__ == "__main__":  main()
