@@ -85,7 +85,7 @@ def get_email(account, proxy, tor):
         else:
             r = requests.post('https://www.instagram.com/accounts/account_recovery_send_ajax/', data, cookies=cookies, headers=headers, proxies=proxy, timeout=10)
       
-        print("-> debug: ",r.text)
+        #print("-> debug: ",r.text)
 
         if "We couldn't reach your email address." in r.text or "Sorry, we can't send you a link to reset your password." in r.text:
             #return "Impossible"
@@ -116,8 +116,8 @@ def get_relations_mail(rel, output):
         f.close()
         print("-> reprise à l'index:", iden)
 
-    #proxies = import_proxies()
-    #api = 0
+    proxies = import_proxies()
+    api = 0
 
     tor = torrequest.TorRequest(password='16:333F3E9CD8B5062E60233486ABE1F06B459A43DF6737E12116631FEB5C')
 
@@ -126,16 +126,16 @@ def get_relations_mail(rel, output):
     for i in range(iden, len(rel)):
         print("-> récupération {}/{} ~ {}%".format(i, len(rel), round(100*i/len(rel), 3)))
         r = rel[i]
-        em = get_email(r, None, tor)
+        em = get_email(r, None, None)
         while em == None:
             print("-> erreur, changement de proxy ...")
-            #api = (api + 1) % len(proxies)
-            #print("-> index proxy actuel:", api, "len proxies:", len(proxies))
+            api = (api + 1) % len(proxies)
+            print("-> index proxy actuel:", api, "len proxies:", len(proxies))
             time.sleep(1)
             #change_vpn()
             print("-> TOR nouvelle identité")
             tor.reset_identity()
-            em = get_email(r, None, tor)
+            em = get_email(r, None, None)
 
         files[r] = em
         print(r, "->", em)
