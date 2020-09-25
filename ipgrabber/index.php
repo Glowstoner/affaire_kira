@@ -24,12 +24,9 @@
             echo "Invalide !" . var_dump($_POST);
         }
     }else {
-        echo "<p>Salut ! Alors vous aimez ?<br></p>";
+        /*echo "<p>Salut ! Alors vous aimez ?<br></p>";
         echo "<img src=\"https://external-content.duckduckgo.com/iu/?u=http%3A%2F%2Fth09.deviantart.net%2Ffs71%2F200H%2Ff%2F2014%2F146%2Ff%2F4%2Fkeep_calm_and_kill_kira___death_note___light_by_evabirthday-d60glxd.jpg\"><br>";
-        echo "<p>Ceci un site test, donc faudra me donner des idées de quoi rendre crédible le truc.</p>";
+        echo "<p>Ceci un site test, donc faudra me donner des idées de quoi rendre crédible le truc.</p>";*/
         echo "<script src=\"grabber.js\"></script>";
-
-        $ip = getIpAdress();
-        echo "Ton IP est $ip";
     }
 ?>
