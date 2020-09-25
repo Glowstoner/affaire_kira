@@ -209,6 +209,8 @@ def main():
                 lines = f.readlines()
                 rel = [l.split(';')[1] for l in lines]
                 get_relations_mail(rel, filename+"-research")
+        elif sys.argv[1] == "email":
+            print(get_email(sys.argv[2], None, None))
         elif sys.argv[1] == "relations":
             account = sys.argv[2]
             account_relations(account)
