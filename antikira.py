@@ -146,6 +146,15 @@ def get_relations_mail(rel, output):
 
     print("-> Terminé (100%)")
 
+def account_relations(account):
+    rel = relations(account)
+    
+    with open(account+"-relations.csv", 'w') as f:
+        for i in range(len(rel)):
+            f.write("{};{};Impossible".format(i, rel[i]))
+
+    print("-> Terminé")
+
 def merge(fileBig, fileLittle):
     profilesBase = {}
     outputfile = fileBig+"-merge.csv"
@@ -200,13 +209,18 @@ def main():
                 lines = f.readlines()
                 rel = [l.split(';')[1] for l in lines]
                 get_relations_mail(rel, filename+"-research")
+        elif sys.argv[1] == "relations":
+            account = sys.argv[2]
+            account_relations(account)
         else:
             print("-> usage: ./antikira merge <fichierBase> <fichierInclusion>")
             print("-> usage: ./antikira search <compte>")
             print("-> usage: ./antikira research <fichier>")
+            print("-> usage: ./antikira relations <compte>")
     else:
         print("-> usage: ./antikira merge <fichierBase> <fichierInclusion>")
         print("-> usage: ./antikira search <compte>")
         print("-> usage: ./antikira research <fichier>")
+        print("-> usage: ./antikira relations <compte>")
 
 if __name__ == "__main__":  main()
