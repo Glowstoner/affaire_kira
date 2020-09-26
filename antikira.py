@@ -119,23 +119,24 @@ def get_relations_mail(rel, output):
     proxies = import_proxies()
     api = 0
 
-    tor = torrequest.TorRequest(password='16:333F3E9CD8B5062E60233486ABE1F06B459A43DF6737E12116631FEB5C')
+    #tor = torrequest.TorRequest(password='16:333F3E9CD8B5062E60233486ABE1F06B459A43DF6737E12116631FEB5C')
 
     f = open(output+"_results.csv", 'a')
 
     for i in range(iden, len(rel)):
         print("-> récupération {}/{} ~ {}%".format(i, len(rel), round(100*i/len(rel), 3)))
         r = rel[i]
-        em = get_email(r, None, None)
+        print("-> récupération", r)
+        em = get_email(r, proxies[api], None)
         while em == None:
             print("-> erreur, changement de proxy ...")
             api = (api + 1) % len(proxies)
             print("-> index proxy actuel:", api, "len proxies:", len(proxies))
             time.sleep(1)
             #change_vpn()
-            print("-> TOR nouvelle identité")
-            tor.reset_identity()
-            em = get_email(r, None, None)
+            #print("-> TOR nouvelle identité")
+            #tor.reset_identity()
+            em = get_email(r, proxies[api], None)
 
         files[r] = em
         print(r, "->", em)
