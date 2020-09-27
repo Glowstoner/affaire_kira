@@ -88,8 +88,7 @@ def get_email(account, proxy, tor):
         #print("-> debug: ",r.text)
 
         if "We couldn't reach your email address." in r.text or "Sorry, we can't send you a link to reset your password." in r.text:
-            #return "Impossible"
-            return None
+            return "Impossible"
         elif "\"spam\": true" in r.text:
             global proxies
             proxies.remove(proxy)
@@ -99,7 +98,7 @@ def get_email(account, proxy, tor):
         infos = re.findall(regex,r.text)[0]
         return infos
     except Exception as e:
-        print(e)
+        #print(e)
         return None
 
 def get_relations_mail(rel, output):
@@ -152,7 +151,7 @@ def account_relations(account):
     
     with open(account+"-relations.csv", 'w') as f:
         for i in range(len(rel)):
-            f.write("{};{};Impossible".format(i, rel[i]))
+            f.write("{};{};Impossible\n".format(i, rel[i]))
 
     print("-> Terminé")
 
@@ -174,7 +173,9 @@ def merge(fileBig, fileLittle):
                 if profilesBase[data[1]].strip() == "Impossible" and data[2].strip() != "Impossible":
                     profilesBase[data[1]] = data[2]
                     print("-> merge {} <- {};{}".format(outputfile, data[1], data[2].strip()))
-
+            else:
+                profilesBase[data[1]] = data[2]
+                print("-> merge added new profile", data[1])
 
     with open(outputfile, 'w') as fo:
         c = 0
